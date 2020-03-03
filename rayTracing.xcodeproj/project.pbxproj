@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		32BFC7F1240E143200145513 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32BFC7F0240E143200145513 /* main.cpp */; };
-		32BFC7F9240E188A00145513 /* vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32BFC7F7240E188A00145513 /* vec3.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,7 +25,6 @@
 /* Begin PBXFileReference section */
 		32BFC7ED240E143200145513 /* rayTracing */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rayTracing; sourceTree = BUILT_PRODUCTS_DIR; };
 		32BFC7F0240E143200145513 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		32BFC7F7240E188A00145513 /* vec3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vec3.cpp; sourceTree = "<group>"; };
 		32BFC7F8240E188A00145513 /* vec3.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec3.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,7 +59,6 @@
 			isa = PBXGroup;
 			children = (
 				32BFC7F0240E143200145513 /* main.cpp */,
-				32BFC7F7240E188A00145513 /* vec3.cpp */,
 				32BFC7F8240E188A00145513 /* vec3.hpp */,
 			);
 			path = rayTracing;
@@ -124,7 +121,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32BFC7F9240E188A00145513 /* vec3.cpp in Sources */,
 				32BFC7F1240E143200145513 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
