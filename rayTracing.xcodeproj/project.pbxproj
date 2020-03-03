@@ -26,6 +26,7 @@
 		32BFC7ED240E143200145513 /* rayTracing */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rayTracing; sourceTree = BUILT_PRODUCTS_DIR; };
 		32BFC7F0240E143200145513 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		32BFC7F8240E188A00145513 /* vec3.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec3.hpp; sourceTree = "<group>"; };
+		32BFC7FB240E1A3100145513 /* ray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ray.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				32BFC7F0240E143200145513 /* main.cpp */,
+				32BFC7FB240E1A3100145513 /* ray.hpp */,
 				32BFC7F8240E188A00145513 /* vec3.hpp */,
 			);
 			path = rayTracing;
