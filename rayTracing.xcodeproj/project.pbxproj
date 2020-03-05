@@ -26,6 +26,7 @@
 		323EEE5D240F6ABC00FAAD83 /* hittable_list.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hittable_list.hpp; sourceTree = "<group>"; };
 		323EEE60240F715C00FAAD83 /* random.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = random.hpp; sourceTree = "<group>"; };
 		323EEE63240F71BF00FAAD83 /* camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = camera.hpp; sourceTree = "<group>"; };
+		323EEE66240F7B9E00FAAD83 /* material.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = material.hpp; sourceTree = "<group>"; };
 		32BFC7ED240E143200145513 /* rayTracing */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rayTracing; sourceTree = BUILT_PRODUCTS_DIR; };
 		32BFC7F0240E143200145513 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		32BFC7F8240E188A00145513 /* vec3.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec3.hpp; sourceTree = "<group>"; };
@@ -65,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				32BFC7F0240E143200145513 /* main.cpp */,
+				323EEE66240F7B9E00FAAD83 /* material.hpp */,
 				323EEE63240F71BF00FAAD83 /* camera.hpp */,
 				323EEE60240F715C00FAAD83 /* random.hpp */,
 				32BFC7FE240F65DC00145513 /* hittable.hpp */,

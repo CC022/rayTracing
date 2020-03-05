@@ -12,14 +12,16 @@
 #include <stdio.h>
 #include "hittable.hpp"
 #include "ray.hpp"
+#include "random.hpp"
 
 class sphere: public hittable {
 public:
-    sphere() {}
-    sphere(vec3 cen, float r) : center(cen), radius(r) {};
-//    virtual bool hit(const ray& r, float tmin, float tmax, hit_record& rec) const;
     vec3 center;
     float radius;
+    material *matPtr;
+    
+    sphere() {}
+    sphere(vec3 cen, float r, material *m) : center(cen), radius(r), matPtr(m) {};
     
     bool hit(const ray& r, float t_min, float t_max, hit_record& rec) const {
         vec3 oc = r.origin() - center;
@@ -33,6 +35,7 @@ public:
                 rec.t = temp;
                 rec.p = r.pointAtParameter(rec.t);
                 rec.normal = (rec.p - center) / radius;
+                rec.matPtr = matPtr;
                 return true;
             }
             temp = (-b + sqrt(discriminant)) / a;
@@ -40,11 +43,20 @@ public:
                 rec.t = temp;
                 rec.p = r.pointAtParameter(rec.t);
                 rec.normal = (rec.p - center) / radius;
+                rec.matPtr = matPtr;
                 return true;
             }
         }
         return false;
     }
 };
+
+vec3 randomInUnitSphere() {
+    vec3 p;
+    do {
+        p = 2.0*vec3(randomDouble(), randomDouble(), randomDouble()) - vec3(1, 1, 1);
+    } while (p.squared_length() >= 1.0);
+    return p;
+}
 
 #endif /* sphere_hpp */
