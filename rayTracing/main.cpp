@@ -39,7 +39,7 @@ int main(int argc, const char * argv[]) {
     ofstream imgFile("img.ppm");
     int width = 1000;
     int height = 500;
-    int samples = 50;
+    int samples = 100;
     imgFile << "P3\n" << width << " " << height << "\n255\n";
     vec3 lowerLeftCorner(-2.0,-1.0,-1.0);
     vec3 horizontal(4.0,0.0,0.0);
@@ -53,7 +53,11 @@ int main(int argc, const char * argv[]) {
     list[3] = new sphere(vec3(-1,0,-1), 0.5, new dielectric(1.5));
     list[4] = new sphere(vec3(-1,0,-1), -0.45, new dielectric(1.5));
     hittable *world = new hittable_list(list,4);
-    camera cam;
+    vec3 lookfrom(3,3,2);
+    vec3 lookat(0,0,-1);
+    float distToFocus = (lookfrom - lookat).length();
+    float aperture = 2.0;
+    camera cam(lookfrom, lookat, vec3(0, 1, 0), 20, float(width) / float(height), aperture, distToFocus);
     
     for (int j = height-1; j >= 0; j--) {
         for (int i = 0; i < width; i++) {
