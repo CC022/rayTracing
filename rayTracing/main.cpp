@@ -17,6 +17,44 @@
 #include "camera.hpp"
 #include "material.hpp"
 
+hittable *random_scene() {
+    int n = 500;
+    hittable **list = new hittable*[n+1];
+    list[0] =  new sphere(vec3(0,-1000,0), 1000, new lambertian(vec3(0.5, 0.5, 0.5)));
+    int i = 1;
+    for (int a = -11; a < 11; a++) {
+        for (int b = -11; b < 11; b++) {
+            float choose_mat = randomDouble();
+            vec3 center(a+0.9*randomDouble(),0.2,b+0.9*randomDouble());
+            if ((center-vec3(4,0.2,0)).length() > 0.9) {
+                if (choose_mat < 0.8) {  // diffuse
+                    list[i++] = new sphere(center, 0.2,
+                        new lambertian(vec3(randomDouble()*randomDouble(),
+                                            randomDouble()*randomDouble(),
+                                            randomDouble()*randomDouble())
+                        )
+                    );
+                }
+                else if (choose_mat < 0.95) { // metal
+                    list[i++] = new sphere(center, 0.2,
+                            new metal(vec3(0.5*(1 + randomDouble()),
+                                           0.5*(1 + randomDouble()),
+                                           0.5*(1 + randomDouble()))));
+                }
+                else {  // glass
+                    list[i++] = new sphere(center, 0.2, new dielectric(1.5));
+                }
+            }
+        }
+    }
+
+    list[i++] = new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5));
+    list[i++] = new sphere(vec3(-4, 1, 0), 1.0, new lambertian(vec3(0.4, 0.2, 0.1)));
+    list[i++] = new sphere(vec3(4, 1, 0), 1.0, new metal(vec3(0.7, 0.6, 0.5)));
+
+    return new hittable_list(list,i);
+}
+
 vec3 color(const ray& r, hittable *world, int depth) {
     hit_record rec;
     if (world->hit(r, 0.001, MAXFLOAT, rec)) {
@@ -37,8 +75,8 @@ vec3 color(const ray& r, hittable *world, int depth) {
 int main(int argc, const char * argv[]) {
     using namespace std;
     ofstream imgFile("img.ppm");
-    int width = 1000;
-    int height = 500;
+    int width = 2000;
+    int height = 1000;
     int samples = 100;
     imgFile << "P3\n" << width << " " << height << "\n255\n";
     vec3 lowerLeftCorner(-2.0,-1.0,-1.0);
@@ -46,18 +84,12 @@ int main(int argc, const char * argv[]) {
     vec3 vertical(0.0,2.0,0.0);
     vec3 origin(0.0,0.0,0.0);
     
-    hittable *list[5];
-    list[0] = new sphere(vec3(0,0,-1), 0.5, new lambertian(vec3(0.1, 0.2, 0.5)));
-    list[1] = new sphere(vec3(0,-100.5,-1), 100, new lambertian(vec3(0.8, 0.8, 0.0)));
-    list[2] = new sphere(vec3(1,0,-1), 0.5, new metal(vec3(0.8, 0.6, 0.2)));
-    list[3] = new sphere(vec3(-1,0,-1), 0.5, new dielectric(1.5));
-    list[4] = new sphere(vec3(-1,0,-1), -0.45, new dielectric(1.5));
-    hittable *world = new hittable_list(list,4);
-    vec3 lookfrom(3,3,2);
-    vec3 lookat(0,0,-1);
+    hittable *world = random_scene();
+    vec3 lookfrom(12,3,6);
+    vec3 lookat(0,0,0);
     float distToFocus = (lookfrom - lookat).length();
-    float aperture = 2.0;
-    camera cam(lookfrom, lookat, vec3(0, 1, 0), 20, float(width) / float(height), aperture, distToFocus);
+    float aperture = 0.1;
+    camera cam(lookfrom, lookat, vec3(0, 1, 0), 40, float(width) / float(height), aperture, distToFocus);
     
     for (int j = height-1; j >= 0; j--) {
         for (int i = 0; i < width; i++) {

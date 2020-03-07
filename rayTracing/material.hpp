@@ -81,7 +81,8 @@ public:
         if (dot(r_in.direction(), rec.normal) > 0) {
             outwardNormal = -rec.normal;
             niOverNt = refIdx;
-            cosine = refIdx * dot(r_in.direction(), rec.normal) / r_in.direction().length();
+            cosine = dot(r_in.direction(), rec.normal) / r_in.direction().length();
+            cosine = sqrt(1 - refIdx*refIdx*(1-cosine*cosine));
         } else {
             outwardNormal = rec.normal;
             niOverNt = 1.0 / refIdx;
