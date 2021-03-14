@@ -11,4 +11,5 @@
 
 #include <stdio.h>
 inline double randomDouble() {return rand() / (RAND_MAX + 1.0);}
+inline float randomFloat() {return rand() / (RAND_MAX + 1.0);}
 #endif /* random_hpp */

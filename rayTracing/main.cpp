@@ -8,6 +8,9 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <thread>
+#include <mutex>
 #include "vec3.hpp"
 #include "ray.hpp"
 #include "hittable.hpp"
@@ -29,17 +32,17 @@ hittable *random_scene() {
             if ((center-vec3(4,0.2,0)).length() > 0.9) {
                 if (choose_mat < 0.8) {  // diffuse
                     list[i++] = new sphere(center, 0.2,
-                        new lambertian(vec3(randomDouble()*randomDouble(),
-                                            randomDouble()*randomDouble(),
-                                            randomDouble()*randomDouble())
-                        )
-                    );
+                                           new lambertian(vec3(randomDouble()*randomDouble(),
+                                                               randomDouble()*randomDouble(),
+                                                               randomDouble()*randomDouble())
+                                                          )
+                                           );
                 }
                 else if (choose_mat < 0.95) { // metal
                     list[i++] = new sphere(center, 0.2,
-                            new metal(vec3(0.5*(1 + randomDouble()),
-                                           0.5*(1 + randomDouble()),
-                                           0.5*(1 + randomDouble()))));
+                                           new metal(vec3(0.5*(1 + randomDouble()),
+                                                          0.5*(1 + randomDouble()),
+                                                          0.5*(1 + randomDouble()))));
                 }
                 else {  // glass
                     list[i++] = new sphere(center, 0.2, new dielectric(1.5));
@@ -47,11 +50,11 @@ hittable *random_scene() {
             }
         }
     }
-
+    
     list[i++] = new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5));
     list[i++] = new sphere(vec3(-4, 1, 0), 1.0, new lambertian(vec3(0.4, 0.2, 0.1)));
     list[i++] = new sphere(vec3(4, 1, 0), 1.0, new metal(vec3(0.7, 0.6, 0.5)));
-
+    
     return new hittable_list(list,i);
 }
 
@@ -72,12 +75,31 @@ vec3 color(const ray& r, hittable *world, int depth) {
     }
 }
 
+void renderKernel(int threadIDx, int threadIDy, int width, int height, int samples, camera &cam, hittable *world, std::vector<vec3> &canvas) {
+    int x = threadIDx;
+    int y = threadIDy;
+    if (x > width or y > height) return;
+    vec3 col(0,0,0);
+    float u = float(x + randomFloat()) / float(width);
+    float v = float(y + randomFloat()) / float(height);
+    ray r = cam.getRay(u, v);
+    for (int sample = 0; sample < samples; sample++) {
+        col += color(r, world, 0);
+    }
+    col /= float(samples);
+    col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
+    canvas[y * width + x] = col;
+}
+
 int main(int argc, const char * argv[]) {
     using namespace std;
     ofstream imgFile("img.ppm");
-    int width = 2000;
-    int height = 1000;
+    int width = 1920;
+    int height = 1080;
     int samples = 100;
+    std::vector<std::thread> threads;
+    std::mutex colorWriteMutex;
+    int threadsCount = std::thread::hardware_concurrency() ? std::thread::hardware_concurrency() : 8;
     imgFile << "P3\n" << width << " " << height << "\n255\n";
     vec3 lowerLeftCorner(-2.0,-1.0,-1.0);
     vec3 horizontal(4.0,0.0,0.0);
@@ -90,23 +112,27 @@ int main(int argc, const char * argv[]) {
     float distToFocus = (lookfrom - lookat).length();
     float aperture = 0.1;
     camera cam(lookfrom, lookat, vec3(0, 1, 0), 40, float(width) / float(height), aperture, distToFocus);
+    std::vector<vec3> canvas;
+    canvas.resize(width*height);
+    
+    for (int j = height-1; j >= 0; j--) {
+        std::cout << "\rRendering progress " << (height - j) * 100 / height << '%' << std::flush;
+        for (int i = 0; i < width; i++) {
+            threads.emplace_back(std::thread(renderKernel, i, j, width, height, samples, std::ref(cam), world, std::ref(canvas)));
+            if (threads.size() >= threadsCount) {
+                for (std::thread &thread: threads) {thread.join();}
+                threads.clear();
+            }
+        }
+    }
+    for (std::thread &thread: threads) {thread.join();}
     
     for (int j = height-1; j >= 0; j--) {
         for (int i = 0; i < width; i++) {
-            vec3 col(0, 0, 0);
-            for (int s = 0; s < samples; s++) {
-                float u = float(i + randomDouble()) / float(width);
-                float v = float(j + randomDouble()) / float(height);
-                ray r = cam.getRay(u, v);
-                col += color(r, world, 0);
-            }
-            col /= float(samples);
-            col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
-            int ir = int(255.99 * col[0]);
-            int ig = int(255.99 * col[1]);
-            int ib = int(255.99 * col[2]);
-            imgFile << ir << " " << ig << " " << ib << "\n";
+            vec3 pixel = canvas[j * width + i];
+            imgFile << int(255.99 * pixel[0]) << " " << int(255.99 * pixel[1]) << " " << int(255.99 * pixel[2]) << "\n";
         }
     }
+    
     return 0;
 }
