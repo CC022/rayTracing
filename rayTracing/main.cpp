@@ -118,7 +118,7 @@ int main(int argc, const char * argv[]) {
         std::cout << "\rRendering progress " << (height - j) * 100 / height << '%' << std::flush;
         for (int i = 0; i < width; i++) {
             threads.emplace_back(std::thread(renderKernel, i, j, width, height, samples, std::ref(cam), world, std::ref(canvas)));
-            if (threads.size() >= threadsCount) {
+            if (threads.size() >= threadsCount) {
                 for (std::thread &thread: threads) {thread.join();}
                 threads.clear();
             }
@@ -126,7 +126,7 @@ int main(int argc, const char * argv[]) {
     }
     for (std::thread &thread: threads) {thread.join();}
     auto stopTime = std::chrono::steady_clock::now();
-    std::cout << "Rendering took " << std::chrono::duration<std::chrono::milliseconds>(stopTime - startTime).count() << " ms\n";
+    std::cout << "Rendering took " << std::chrono::duration_cast<std::chrono::milliseconds>(stopTime - startTime).count() << " ms\n";
     // Write image buffer to file
     ofstream imgFile("img.ppm");
     imgFile << "P3\n" << width << " " << height << "\n255\n";
