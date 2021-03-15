@@ -10,7 +10,7 @@
 #include <fstream>
 #include <vector>
 #include <thread>
-#include <mutex>
+#include <chrono>
 #include "vec3.hpp"
 #include "ray.hpp"
 #include "hittable.hpp"
@@ -95,7 +95,7 @@ int main(int argc, const char * argv[]) {
     using namespace std;
     int width = 1920;
     int height = 1080;
-    int samples = 50;
+    int samples = 16;
     std::vector<std::thread> threads;
     std::mutex colorWriteMutex;
     int threadsCount = std::thread::hardware_concurrency() ? std::thread::hardware_concurrency() : 8;
@@ -113,6 +113,7 @@ int main(int argc, const char * argv[]) {
     std::vector<vec3> canvas;
     canvas.resize(width*height);
     
+    auto startTime = std::chrono::steady_clock::now();
     for (int j = height-1; j >= 0; j--) {
         std::cout << "\rRendering progress " << (height - j) * 100 / height << '%' << std::flush;
         for (int i = 0; i < width; i++) {
@@ -124,6 +125,8 @@ int main(int argc, const char * argv[]) {
         }
     }
     for (std::thread &thread: threads) {thread.join();}
+    auto stopTime = std::chrono::steady_clock::now();
+    std::cout << "Rendering took " << std::chrono::duration<std::chrono::milliseconds>(stopTime - startTime).count() << " ms\n";
     // Write image buffer to file
     ofstream imgFile("img.ppm");
     imgFile << "P3\n" << width << " " << height << "\n255\n";
