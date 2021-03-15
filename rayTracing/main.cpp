@@ -27,22 +27,22 @@ hittable *random_scene() {
     int i = 1;
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
-            float choose_mat = randomDouble();
-            vec3 center(a+0.9*randomDouble(),0.2,b+0.9*randomDouble());
+            float choose_mat = randomFloat();
+            vec3 center(a+0.9*randomFloat(),0.2,b+0.9*randomFloat());
             if ((center-vec3(4,0.2,0)).length() > 0.9) {
                 if (choose_mat < 0.8) {  // diffuse
                     list[i++] = new sphere(center, 0.2,
-                                           new lambertian(vec3(randomDouble()*randomDouble(),
-                                                               randomDouble()*randomDouble(),
-                                                               randomDouble()*randomDouble())
+                                           new lambertian(vec3(randomFloat()*randomFloat(),
+                                                               randomFloat()*randomFloat(),
+                                                               randomFloat()*randomFloat())
                                                           )
                                            );
                 }
                 else if (choose_mat < 0.95) { // metal
                     list[i++] = new sphere(center, 0.2,
-                                           new metal(vec3(0.5*(1 + randomDouble()),
-                                                          0.5*(1 + randomDouble()),
-                                                          0.5*(1 + randomDouble()))));
+                                           new metal(vec3(0.5*(1 + randomFloat()),
+                                                          0.5*(1 + randomFloat()),
+                                                          0.5*(1 + randomFloat()))));
                 }
                 else {  // glass
                     list[i++] = new sphere(center, 0.2, new dielectric(1.5));
@@ -63,7 +63,7 @@ vec3 color(const ray& r, hittable *world, int depth) {
     if (world->hit(r, 0.001, MAXFLOAT, rec)) {
         ray scattered;
         vec3 attenuation;
-        if (depth < 50 && rec.matPtr->scatter(r, rec, attenuation, scattered)) {
+        if (depth < 12 && rec.matPtr->scatter(r, rec, attenuation, scattered)) {
             return attenuation*color(scattered, world, depth+1);
         } else {
             return vec3(0, 0, 0);
@@ -80,10 +80,10 @@ void renderKernel(int threadIDx, int threadIDy, int width, int height, int sampl
     int y = threadIDy;
     if (x > width or y > height) return;
     vec3 col(0,0,0);
-    float u = float(x + randomFloat()) / float(width);
-    float v = float(y + randomFloat()) / float(height);
-    ray r = cam.getRay(u, v);
     for (int sample = 0; sample < samples; sample++) {
+        float u = float(x + randomFloat()) / float(width);
+        float v = float(y + randomFloat()) / float(height);
+        ray r = cam.getRay(u, v);
         col += color(r, world, 0);
     }
     col /= float(samples);
@@ -93,14 +93,12 @@ void renderKernel(int threadIDx, int threadIDy, int width, int height, int sampl
 
 int main(int argc, const char * argv[]) {
     using namespace std;
-    ofstream imgFile("img.ppm");
     int width = 1920;
     int height = 1080;
-    int samples = 100;
+    int samples = 50;
     std::vector<std::thread> threads;
     std::mutex colorWriteMutex;
     int threadsCount = std::thread::hardware_concurrency() ? std::thread::hardware_concurrency() : 8;
-    imgFile << "P3\n" << width << " " << height << "\n255\n";
     vec3 lowerLeftCorner(-2.0,-1.0,-1.0);
     vec3 horizontal(4.0,0.0,0.0);
     vec3 vertical(0.0,2.0,0.0);
@@ -126,7 +124,9 @@ int main(int argc, const char * argv[]) {
         }
     }
     for (std::thread &thread: threads) {thread.join();}
-    
+    // Write image buffer to file
+    ofstream imgFile("img.ppm");
+    imgFile << "P3\n" << width << " " << height << "\n255\n";
     for (int j = height-1; j >= 0; j--) {
         for (int i = 0; i < width; i++) {
             vec3 pixel = canvas[j * width + i];

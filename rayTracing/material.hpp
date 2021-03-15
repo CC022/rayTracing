@@ -94,7 +94,7 @@ public:
             reflectProb = 1.0;
         }
         
-        if (randomDouble() < reflectProb) {
+        if (randomFloat() < reflectProb) {
             scattered = ray(rec.p, reflected);
         } else {
             scattered = ray(rec.p, refracted);

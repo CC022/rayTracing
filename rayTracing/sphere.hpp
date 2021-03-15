@@ -33,7 +33,7 @@ public:
             float temp = (-b - sqrt(discriminant))/a;
             if (temp < t_max && temp > t_min) {
                 rec.t = temp;
-                rec.p = r.pointAtParameter(rec.t);
+                rec.p = r.at(rec.t);
                 rec.normal = (rec.p - center) / radius;
                 rec.matPtr = matPtr;
                 return true;
@@ -41,7 +41,7 @@ public:
             temp = (-b + sqrt(discriminant)) / a;
             if (temp < t_max && temp > t_min) {
                 rec.t = temp;
-                rec.p = r.pointAtParameter(rec.t);
+                rec.p = r.at(rec.t);
                 rec.normal = (rec.p - center) / radius;
                 rec.matPtr = matPtr;
                 return true;
@@ -54,7 +54,7 @@ public:
 vec3 randomInUnitSphere() {
     vec3 p;
     do {
-        p = 2.0*vec3(randomDouble(), randomDouble(), randomDouble()) - vec3(1, 1, 1);
+        p = 2.0*vec3(randomFloat(), randomFloat(), randomFloat()) - vec3(1, 1, 1);
     } while (p.squared_length() >= 1.0);
     return p;
 }

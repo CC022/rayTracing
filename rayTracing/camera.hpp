@@ -46,8 +46,6 @@ public:
     
     ray getRay(float s, float t) {
         vec3 rd = lensRadius * randomInUnitDisk();
-//        std::cout << "rd " << offset.length() << std::endl;
-
         vec3 offset = u * rd.x() + v * rd.y();
         return ray(origin + offset, lowerLeftCorner + s*horizontal + t*vertical - origin - offset);
     }

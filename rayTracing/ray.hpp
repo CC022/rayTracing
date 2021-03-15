@@ -16,13 +16,13 @@ class ray {
     
 public:
     ray() {}
-    ray(const vec3& a, const vec3& b) {A = a; B = b;}
-    vec3 origin() const {return A;}
-    vec3 direction() const {return B;}
-    vec3 pointAtParameter(float t) const {return A + t*B;}
+    ray(const vec3& origin, const vec3& direction) {orig = origin; dir = direction;}
+    vec3 origin() const {return orig;}
+    vec3 direction() const {return dir;}
+    vec3 at(float t) const {return orig + t*dir;}
     
-    vec3 A;
-    vec3 B;
+    vec3 orig;
+    vec3 dir;
 };
 
 #endif /* ray_hpp */
