@@ -96,7 +96,7 @@ int main(int argc, const char * argv[]) {
     using namespace std;
     int width = 800;
     int height = 600;
-    int samples = 32;
+    int samples = 16;
     std::vector<std::thread> threads;
     std::mutex colorWriteMutex;
     int threadsCount = std::thread::hardware_concurrency() ? std::thread::hardware_concurrency() : 8;

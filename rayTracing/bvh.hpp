@@ -22,9 +22,7 @@ class bvhNode : public hittable {
 public:
     bvhNode();
     bvhNode(const hittableList &list) : bvhNode(list.list, list.listSize, 0, list.listSize) {}
-    bvhNode(hittable **srcObjects, size_t listSize, size_t start, size_t end) {
-        hittable **objects = new hittable*[listSize]; // create a temp mutable buffer of hittable objects, then deep copy
-        std::memcpy(objects, srcObjects, listSize * sizeof(hittable**));
+    bvhNode(hittable **objects, size_t listSize, size_t start, size_t end) {
         int axis = randomInt(0, 2); // choose a random axis to split
         auto comparator = (axis == 0) ? box_x_compare : (axis == 1) ? box_y_compare : box_z_compare;
         size_t objectSpan = end - start;
@@ -50,13 +48,12 @@ public:
             std::cerr << "Object without bounding box is sent to constructing bvhNode\n";
         }
         box = surroundingBox(boxLeft, boxRight);
-        delete [] objects;
     }
     
     bool hit(const ray &r, float t_min, float t_max, hit_record& rec) const override{
         if (!box.hit(r, t_min, t_max)) return false;
         bool hitLeft = left->hit(r, t_min, t_max, rec);
-        bool hitRight = right->hit(r, t_min, t_max, rec);
+        bool hitRight = right->hit(r, t_min, hitLeft ? rec.t : t_max, rec);
         return (hitLeft || hitRight);
     }
     
