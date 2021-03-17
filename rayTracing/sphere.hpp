@@ -23,7 +23,7 @@ public:
     sphere() {}
     sphere(vec3 cen, float r, material *m) : center(cen), radius(r), matPtr(m) {};
     
-    bool hit(const ray& r, float t_min, float t_max, hit_record& rec) const {
+    bool hit(const ray& r, float t_min, float t_max, hit_record& rec) const override {
         vec3 oc = r.origin() - center;
         float a = dot(r.direction(), r.direction());
         float b = dot(oc, r.direction());
@@ -48,6 +48,11 @@ public:
             }
         }
         return false;
+    }
+    
+    bool boundingBox(aabb& outputBox) const override {
+        outputBox = aabb(center - vec3(radius, radius, radius), center + vec3(radius, radius, radius));
+        return true;
     }
 };
 

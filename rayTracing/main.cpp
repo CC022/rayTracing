@@ -15,12 +15,14 @@
 #include "ray.hpp"
 #include "hittable.hpp"
 #include "sphere.hpp"
-#include "hittable_list.hpp"
+#include "hittableList.hpp"
 #include "random.hpp"
 #include "camera.hpp"
 #include "material.hpp"
+#include "aabb.hpp"
+#include "bvh.hpp"
 
-hittable *random_scene() {
+hittableList random_scene() {
     int n = 500;
     hittable **list = new hittable*[n+1];
     list[0] =  new sphere(vec3(0,-1000,0), 1000, new lambertian(vec3(0.5, 0.5, 0.5)));
@@ -54,8 +56,7 @@ hittable *random_scene() {
     list[i++] = new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5));
     list[i++] = new sphere(vec3(-4, 1, 0), 1.0, new lambertian(vec3(0.4, 0.2, 0.1)));
     list[i++] = new sphere(vec3(4, 1, 0), 1.0, new metal(vec3(0.7, 0.6, 0.5)));
-    
-    return new hittable_list(list,i);
+    return hittableList(list, i);
 }
 
 vec3 color(const ray& r, hittable *world, int depth) {
@@ -93,9 +94,9 @@ void renderKernel(int threadIDx, int threadIDy, int width, int height, int sampl
 
 int main(int argc, const char * argv[]) {
     using namespace std;
-    int width = 1920;
-    int height = 1080;
-    int samples = 16;
+    int width = 800;
+    int height = 600;
+    int samples = 32;
     std::vector<std::thread> threads;
     std::mutex colorWriteMutex;
     int threadsCount = std::thread::hardware_concurrency() ? std::thread::hardware_concurrency() : 8;
@@ -104,7 +105,9 @@ int main(int argc, const char * argv[]) {
     vec3 vertical(0.0,2.0,0.0);
     vec3 origin(0.0,0.0,0.0);
     
-    hittable *world = random_scene();
+    hittableList randomScene = random_scene();
+    bvhNode BVHScene = bvhNode(randomScene);
+    hittable *world = &BVHScene;
     vec3 lookfrom(12,3,6);
     vec3 lookat(0,0,0);
     float distToFocus = (lookfrom - lookat).length();
@@ -118,7 +121,7 @@ int main(int argc, const char * argv[]) {
         std::cout << "\rRendering progress " << (height - j) * 100 / height << '%' << std::flush;
         for (int i = 0; i < width; i++) {
             threads.emplace_back(std::thread(renderKernel, i, j, width, height, samples, std::ref(cam), world, std::ref(canvas)));
-            if (threads.size() >= threadsCount) {
+            if (threads.size() >= threadsCount) {
                 for (std::thread &thread: threads) {thread.join();}
                 threads.clear();
             }
@@ -126,7 +129,7 @@ int main(int argc, const char * argv[]) {
     }
     for (std::thread &thread: threads) {thread.join();}
     auto stopTime = std::chrono::steady_clock::now();
-    std::cout << "Rendering took " << std::chrono::duration_cast<std::chrono::milliseconds>(stopTime - startTime).count() << " ms\n";
+    std::cout << "\nRendering took " << std::chrono::duration_cast<std::chrono::milliseconds>(stopTime - startTime).count() << " ms\n";
     // Write image buffer to file
     ofstream imgFile("img.ppm");
     imgFile << "P3\n" << width << " " << height << "\n255\n";

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		32BFC7F1240E143200145513 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32BFC7F0240E143200145513 /* main.cpp */; };
+		32C735F42600709B002342E7 /* aabb.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 32C735F026007025002342E7 /* aabb.hpp */; };
+		32C735F62600778F002342E7 /* hittable.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 32BFC7FE240F65DC00145513 /* hittable.hpp */; };
+		32C735FE26007ECE002342E7 /* bvh.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 32C735FA26007EAF002342E7 /* bvh.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,7 +26,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		323EEE5D240F6ABC00FAAD83 /* hittable_list.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hittable_list.hpp; sourceTree = "<group>"; };
+		323EEE5D240F6ABC00FAAD83 /* hittableList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hittableList.hpp; sourceTree = "<group>"; };
 		323EEE60240F715C00FAAD83 /* random.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = random.hpp; sourceTree = "<group>"; };
 		323EEE63240F71BF00FAAD83 /* camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = camera.hpp; sourceTree = "<group>"; };
 		323EEE66240F7B9E00FAAD83 /* material.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = material.hpp; sourceTree = "<group>"; };
@@ -31,8 +34,10 @@
 		32BFC7F0240E143200145513 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		32BFC7F8240E188A00145513 /* vec3.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec3.hpp; sourceTree = "<group>"; };
 		32BFC7FB240E1A3100145513 /* ray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ray.hpp; sourceTree = "<group>"; };
-		32BFC7FE240F65DC00145513 /* hittable.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hittable.hpp; sourceTree = "<group>"; };
+		32BFC7FE240F65DC00145513 /* hittable.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = hittable.hpp; sourceTree = "<group>"; };
 		32BFC801240F668700145513 /* sphere.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sphere.hpp; sourceTree = "<group>"; };
+		32C735F026007025002342E7 /* aabb.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = aabb.hpp; sourceTree = "<group>"; };
+		32C735FA26007EAF002342E7 /* bvh.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = bvh.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,9 +76,11 @@
 				323EEE60240F715C00FAAD83 /* random.hpp */,
 				32BFC7FE240F65DC00145513 /* hittable.hpp */,
 				32BFC801240F668700145513 /* sphere.hpp */,
-				323EEE5D240F6ABC00FAAD83 /* hittable_list.hpp */,
+				323EEE5D240F6ABC00FAAD83 /* hittableList.hpp */,
 				32BFC7FB240E1A3100145513 /* ray.hpp */,
 				32BFC7F8240E188A00145513 /* vec3.hpp */,
+				32C735F026007025002342E7 /* aabb.hpp */,
+				32C735FA26007EAF002342E7 /* bvh.hpp */,
 			);
 			path = rayTracing;
 			sourceTree = "<group>";
@@ -135,6 +142,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32C735F42600709B002342E7 /* aabb.hpp in Sources */,
+				32C735FE26007ECE002342E7 /* bvh.hpp in Sources */,
+				32C735F62600778F002342E7 /* hittable.hpp in Sources */,
 				32BFC7F1240E143200145513 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
