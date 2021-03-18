@@ -21,11 +21,13 @@
 #include "material.hpp"
 #include "aabb.hpp"
 #include "bvh.hpp"
+#include "texture.hpp"
 
 hittableList random_scene() {
     int n = 500;
     hittable **list = new hittable*[n+1];
-    list[0] =  new sphere(vec3(0,-1000,0), 1000, new lambertian(vec3(0.5, 0.5, 0.5)));
+    texture* checker = new checkerTexture(vec3(0.2, 0.3, 0.1), vec3(0.9, 0.9, 0.9));
+    list[0] =  new sphere(vec3(0,-1000,0), 1000, new lambertian(checker));
     int i = 1;
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
@@ -94,8 +96,8 @@ void renderKernel(int threadIDx, int threadIDy, int width, int height, int sampl
 
 int main(int argc, const char * argv[]) {
     using namespace std;
-    int width = 800;
-    int height = 600;
+    int width = 600;
+    int height = 400;
     int samples = 16;
     std::vector<std::thread> threads;
     std::mutex colorWriteMutex;

@@ -10,11 +10,19 @@
 #define sphere_hpp
 
 #include <stdio.h>
+#include <cmath>
 #include "hittable.hpp"
 #include "ray.hpp"
 #include "random.hpp"
 
 class sphere: public hittable {
+    static void getSphereUV(const vec3 &point, float &u, float &v) {
+        auto theta = acos(-point.y());
+        auto phi = atan2(-point.z(), point.x()) + M_PI;
+        u = phi / (2*M_PI);
+        v = theta / M_PI;
+    }
+    
 public:
     vec3 center;
     float radius;
@@ -35,6 +43,7 @@ public:
                 rec.t = temp;
                 rec.p = r.at(rec.t);
                 rec.normal = (rec.p - center) / radius;
+                getSphereUV(rec.normal, rec.u, rec.v);
                 rec.matPtr = matPtr;
                 return true;
             }
@@ -43,6 +52,7 @@ public:
                 rec.t = temp;
                 rec.p = r.at(rec.t);
                 rec.normal = (rec.p - center) / radius;
+                getSphereUV(rec.normal, rec.u, rec.v);
                 rec.matPtr = matPtr;
                 return true;
             }

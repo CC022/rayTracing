@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "sphere.hpp"
+#include "texture.hpp"
 
 vec3 reflect(const vec3& v, const vec3& n) {
     return v - 2*dot(v, n)*n;
@@ -40,13 +41,14 @@ public:
 
 class lambertian: public material {
 public:
-    vec3 albedo;
+    texture *albedo;
     
-    lambertian(const vec3& a): albedo(a) {}
+    lambertian(const vec3& color): albedo(new solidColor(color)) {}
+    lambertian(texture *texture) : albedo(texture) {}
     bool scatter(const ray &r_in, const hit_record &rec, vec3 &attenuation, ray &scattered) const override {
         vec3 target = rec.p + rec.normal + randomInUnitSphere();
         scattered = ray(rec.p, target - rec.p);
-        attenuation = albedo;
+        attenuation = albedo->value(rec.u, rec.v, rec.p);
         return true;
     }
 };
