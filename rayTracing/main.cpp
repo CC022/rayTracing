@@ -26,9 +26,8 @@
 hittableList random_scene() {
     int n = 500;
     hittable **list = new hittable*[n+1];
-    texture* checker = new checkerTexture(vec3(0.2, 0.3, 0.1), vec3(0.9, 0.9, 0.9));
-    list[0] =  new sphere(vec3(0,-1000,0), 1000, new lambertian(checker));
-    int i = 1;
+    int i = 0;
+    list[i++] =  new sphere(vec3(0,-1000,0), 1000, new lambertian(new checkerTexture(vec3(0.7, 0.7, 0.7), vec3(0.9, 0.9, 0.9))));
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
             float choose_mat = randomFloat();
@@ -54,10 +53,11 @@ hittableList random_scene() {
             }
         }
     }
-    
     list[i++] = new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5));
     list[i++] = new sphere(vec3(-4, 1, 0), 1.0, new lambertian(vec3(0.4, 0.2, 0.1)));
-    list[i++] = new sphere(vec3(4, 1, 0), 1.0, new metal(vec3(0.7, 0.6, 0.5)));
+    texture* earthTexture = new imageTexture("/Volumes/DATA/Documents_local/earthmap.ppm");
+    list[i++] = new sphere(vec3(2, 0.9, 4), 1.0, new lambertian(earthTexture));
+    list[i++] = new sphere(vec3(4, 1, 0), 1.0, new metal(vec3(0.9, 0.9, 0.8)));
     return hittableList(list, i);
 }
 
@@ -96,9 +96,9 @@ void renderKernel(int threadIDx, int threadIDy, int width, int height, int sampl
 
 int main(int argc, const char * argv[]) {
     using namespace std;
-    int width = 600;
-    int height = 400;
-    int samples = 16;
+    int width = 800;
+    int height = 600;
+    int samples = 64;
     std::vector<std::thread> threads;
     std::mutex colorWriteMutex;
     int threadsCount = std::thread::hardware_concurrency() ? std::thread::hardware_concurrency() : 8;
