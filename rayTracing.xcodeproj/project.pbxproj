@@ -12,6 +12,7 @@
 		32C735F62600778F002342E7 /* hittable.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 32BFC7FE240F65DC00145513 /* hittable.hpp */; };
 		32C735FE26007ECE002342E7 /* bvh.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 32C735FA26007EAF002342E7 /* bvh.hpp */; };
 		32C7360926030A97002342E7 /* texture.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 32C7360526030A87002342E7 /* texture.hpp */; };
+		32FD8D00262CEE26001CD43B /* triangle.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 32FD8CFC262CECA4001CD43B /* triangle.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +41,7 @@
 		32C735F026007025002342E7 /* aabb.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = aabb.hpp; sourceTree = "<group>"; };
 		32C735FA26007EAF002342E7 /* bvh.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = bvh.hpp; sourceTree = "<group>"; };
 		32C7360526030A87002342E7 /* texture.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = texture.hpp; sourceTree = "<group>"; };
+		32FD8CFC262CECA4001CD43B /* triangle.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = triangle.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 				323EEE60240F715C00FAAD83 /* random.hpp */,
 				32BFC7FE240F65DC00145513 /* hittable.hpp */,
 				32BFC801240F668700145513 /* sphere.hpp */,
+				32FD8CFC262CECA4001CD43B /* triangle.hpp */,
 				323EEE5D240F6ABC00FAAD83 /* hittableList.hpp */,
 				32BFC7FB240E1A3100145513 /* ray.hpp */,
 				32BFC7F8240E188A00145513 /* vec3.hpp */,
@@ -147,6 +150,7 @@
 			files = (
 				32C735F42600709B002342E7 /* aabb.hpp in Sources */,
 				32C735FE26007ECE002342E7 /* bvh.hpp in Sources */,
+				32FD8D00262CEE26001CD43B /* triangle.hpp in Sources */,
 				32C735F62600778F002342E7 /* hittable.hpp in Sources */,
 				32BFC7F1240E143200145513 /* main.cpp in Sources */,
 				32C7360926030A97002342E7 /* texture.hpp in Sources */,

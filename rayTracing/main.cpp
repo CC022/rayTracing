@@ -15,6 +15,7 @@
 #include "ray.hpp"
 #include "hittable.hpp"
 #include "sphere.hpp"
+#include "triangle.hpp"
 #include "hittableList.hpp"
 #include "random.hpp"
 #include "camera.hpp"
@@ -53,11 +54,12 @@ hittableList random_scene() {
             }
         }
     }
-    list[i++] = new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5));
-    list[i++] = new sphere(vec3(-4, 1, 0), 1.0, new lambertian(vec3(0.4, 0.2, 0.1)));
     texture* earthTexture = new imageTexture("/Volumes/DATA/Documents_local/earthmap.ppm");
     list[i++] = new sphere(vec3(2, 0.9, 4), 1.0, new lambertian(earthTexture));
+    list[i++] = new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5));
+    list[i++] = new sphere(vec3(-4, 1, 0), 1.0, new lambertian(vec3(0.4, 0.2, 0.1)));
     list[i++] = new sphere(vec3(4, 1, 0), 1.0, new metal(vec3(0.9, 0.9, 0.8)));
+    list[i++] = new triangle(vec3(2, 1, -5), vec3(0, 3, -5), vec3(-2, 1, -5), new lambertian(vec3(0.5, 0.0, 0.0)));
     return hittableList(list, i);
 }
 
@@ -94,11 +96,12 @@ void renderKernel(int threadIDx, int threadIDy, int width, int height, int sampl
     canvas[y * width + x] = col;
 }
 
+
 int main(int argc, const char * argv[]) {
     using namespace std;
     int width = 800;
     int height = 600;
-    int samples = 64;
+    int samples = 16;
     std::vector<std::thread> threads;
     std::mutex colorWriteMutex;
     int threadsCount = std::thread::hardware_concurrency() ? std::thread::hardware_concurrency() : 8;
