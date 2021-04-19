@@ -42,6 +42,7 @@
 		32C735FA26007EAF002342E7 /* bvh.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = bvh.hpp; sourceTree = "<group>"; };
 		32C7360526030A87002342E7 /* texture.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = texture.hpp; sourceTree = "<group>"; };
 		32FD8CFC262CECA4001CD43B /* triangle.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = triangle.hpp; sourceTree = "<group>"; };
+		32FD8D03262D4CA1001CD43B /* renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = renderer.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				32BFC7F0240E143200145513 /* main.cpp */,
+				32FD8D03262D4CA1001CD43B /* renderer.hpp */,
 				323EEE66240F7B9E00FAAD83 /* material.hpp */,
 				323EEE63240F71BF00FAAD83 /* camera.hpp */,
 				323EEE60240F715C00FAAD83 /* random.hpp */,
