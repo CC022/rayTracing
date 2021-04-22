@@ -19,12 +19,22 @@ class triangle : public hittable {
     
 public:
     vec3 vertices[3];
+    float u[3];
+    float v[3];
     material *matPtr;
     
     triangle(vec3 v0, vec3 v1, vec3 v2, material *m) : matPtr(m) {
         vertices[0] = v0;
         vertices[1] = v1;
         vertices[2] = v2;
+    }
+    
+    triangle(vec3 v0, vec3 v1, vec3 v2, float U0, float U1, float U2, float V0, float V1, float V2, material *m) : matPtr(m) {
+        vertices[0] = v0;
+        vertices[1] = v1;
+        vertices[2] = v2;
+        u[0] = U0; u[1] = U1; u[2] = U2;
+        v[0] = V0; v[1] = V1; v[2] = V2;
     }
     
     bool hit(const ray& r, float t_min, float t_max, hit_record &rec) const override {
@@ -47,8 +57,8 @@ public:
             rec.p = r.at(rec.t);
             rec.normal = Normal;
             // TODO: real UV
-            rec.u = b1;
-            rec.v = b2;
+            rec.u = b1*u[0] + b2*u[1] + (1-b1-b2)*u[2];
+            rec.v = b1*v[0] + b2*v[1] + (1-b1-b2)*v[2];
             rec.matPtr = matPtr;
             return true;
         }

@@ -58,7 +58,8 @@ public:
     virtual vec3 value(double u, double v, const vec3 &point) const override {
         if (imageBuffer == nullptr) {return vec3(1, 0, 1);}
         u = std::clamp(u, 0.0, 1.0);
-        v = 1.0 - std::clamp(v, 0.0, 1.0); // Flip v to image coordinates
+//        v = 1.0 - std::clamp(v, 0.0, 1.0); // Flip v to image coordinates
+        v = std::clamp(v, 0.0, 1.0); // Flip v to image coordinates
         auto i = static_cast<int>(u * w);
         auto j = static_cast<int>(v * h);
         i = std::clamp(i, 0, w-1);

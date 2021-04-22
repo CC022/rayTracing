@@ -34,7 +34,6 @@ class renderer {
     size_t samples = 0;
     std::vector<std::thread> threads;
     int threadsCount = std::thread::hardware_concurrency() ? std::thread::hardware_concurrency() : 8;
-    hittable *world = nullptr;
     camera cam;
     std::vector<vec3> canvas;
     
@@ -72,6 +71,8 @@ class renderer {
     }
     
 public:
+    hittable *world = nullptr;
+
     renderer(size_t width, size_t height, size_t samples, vec3 lookFrom, vec3 lookAt, float vfov, float aperture) :
     width(width),
     height(height),
