@@ -4,3 +4,4 @@ My code for "Ray Tracing in One Weekend"
 Original article: https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
 ![alt tag](render.png)
+![alt tag](gltf_duck.png)
